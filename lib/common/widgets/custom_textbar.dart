@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -5,32 +6,37 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextInputType keyboardType;
-
+  final Color? hindTextColor;
+  final Color? textColor;
+  final int? maxline;
   const CustomTextField({
-    super.key,
-    required this.hintText,
+    Key? key,
     required this.controller,
+    required this.hintText,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
-  });
+    this.hindTextColor = Colors.white,
+    this.textColor = Colors.white,
+    this.maxline = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: TextFormField(
         cursorColor: Colors.blue,
         strutStyle:
             const StrutStyle(fontFamily: 'rejoin', fontWeight: FontWeight.bold),
         style: TextStyle(
-          color: Colors.white,
+          color: textColor,
         ),
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: const TextStyle(
-              color: Colors.white,
+            hintStyle: TextStyle(
+              color: hindTextColor,
             ),
             hoverColor: Colors.blue,
             border: const OutlineInputBorder(
@@ -38,7 +44,7 @@ class CustomTextField extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
@@ -50,6 +56,7 @@ class CustomTextField extends StatelessWidget {
           }
           return null;
         },
+        maxLines: maxline,
       ),
     );
   }

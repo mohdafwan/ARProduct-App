@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interior_design_arapp/features/category/screens/category_screen.dart';
 import 'package:interior_design_arapp/features/home/screens/home_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:interior_design_arapp/features/setting/screens/settings_screen.dart';
@@ -14,6 +15,7 @@ class _BottomBarState extends State<BottomBar> {
   int _page = 0;
   List<Widget> pageList = [
     const HomeScreen(),
+    CategoryScreen(),
     const SettingScreen(),
   ];
 
@@ -37,7 +39,7 @@ class _BottomBarState extends State<BottomBar> {
         body: pageList[_page],
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
-          width: 140,
+          width: 200,
           margin: EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
             color: Colors.black,
@@ -58,13 +60,23 @@ class _BottomBarState extends State<BottomBar> {
                 },
               ),
               BottomBarButtons(
-                imagePath: 'assets/images/settings.png',
-                imageSize: 23,
+                imagePath: 'assets/images/visualization.png',
+                imageSize: 20,
                 color: _page == 1
                     ? const Color.fromARGB(255, 184, 146, 212)
                     : const Color.fromARGB(89, 245, 245, 245),
                 callback: () {
                   updatePage(1);
+                },
+              ),
+              BottomBarButtons(
+                imagePath: 'assets/images/settings.png',
+                imageSize: 23,
+                color: _page == 2
+                    ? const Color.fromARGB(255, 184, 146, 212)
+                    : const Color.fromARGB(89, 245, 245, 245),
+                callback: () {
+                  updatePage(2);
                 },
               ),
             ],

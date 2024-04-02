@@ -6,6 +6,8 @@ import 'package:interior_design_arapp/features/setting/widgets/navigate_button.d
 // ignore: depend_on_referenced_packages
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:interior_design_arapp/features/setting/widgets/settings_btns.dart';
+import 'package:interior_design_arapp/providers/user.provider.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -16,8 +18,9 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
-    List<String> ListViewDemoObjects = ['string one', "string two"];
-    return Scaffold(              
+    List<String> listViewDemoObjects = ['string one', "string two"];
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
@@ -59,11 +62,22 @@ class _SettingScreenState extends State<SettingScreen> {
             padding: EdgeInsets.only(top: 12, left: 15, right: 15),
           ),
           NavigateButtonToTheContext(),
-          const HeadingText(
-            textitem: 'General',
-            fontSize: 18,
-            padding: EdgeInsets.only(top: 0, left: 15, right: 15),
-            weight: FontWeight.w400,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              HeadingText(
+                textitem: 'General',
+                fontSize: 18,
+                padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                weight: FontWeight.w400,
+              ),
+              HeadingText(
+                textitem: userProvider.user.type,
+                fontSize: 18,
+                padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+                weight: FontWeight.bold,
+              ),
+            ],
           ),
           settings_button(
             text: 'Your Orders',

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
 
+import 'package:cloudinary_flutter/image/cld_image.dart';
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
   const HomeScreen({super.key});
@@ -17,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
     print(userProvider.user.toJson());
 
     return Scaffold(
+      floatingActionButton: const CartFloating(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -25,20 +29,61 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(color: Colors.amberAccent),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                  color: Color.fromARGB(255, 228, 174, 233),
+                ),
                 width: double.infinity,
-                child: const Text("Data"),
+                child: SizedBox(
+                  child: CldImageWidget(
+                    
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.medium,
+                    repeat: ImageRepeat.noRepeat,
+                    publicId: "fa1cgi9q32fa8axtzeof",
+                  ),
+                ),
               ),
             ),
             Expanded(
               flex: 2,
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(color: Colors.green),
                 child: const Text('DATA'),
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CartFloating extends StatelessWidget {
+  const CartFloating({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/cartScreen');
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 25),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Image.asset(
+          'assets/images/cartfree.png',
+          color: Colors.black,
+          scale: 1,
         ),
       ),
     );

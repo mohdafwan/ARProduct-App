@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/common/widgets/bottom_bar.dart';
+import 'package:interior_design_arapp/features/admin/screens/admin_screens.dart';
 import 'package:interior_design_arapp/features/auth/services/auth.service.dart';
 import 'package:interior_design_arapp/features/welcome/screens/screen_welcome.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
@@ -7,7 +8,13 @@ import 'package:interior_design_arapp/routes.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
+// cloudinary
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
+
 void main() {
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: 'dwnwywbma');
   runApp(
     MultiProvider(
       providers: [
@@ -19,7 +26,7 @@ void main() {
         debugShowCheckedModeBanner: false,
         title: 'Interior Design',
         onGenerateRoute: (settings) => generateRoute(settings),
-        home:const MyARApp(),
+        home: const MyARApp(),
       ),
     ),
   );
@@ -43,7 +50,9 @@ class _MyARAppState extends State<MyARApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Provider.of<UserProvider>(context).user.token.isNotEmpty
-          ? const BottomBar()
+          ? Provider.of<UserProvider>(context).user.type == 'user'
+              ? const BottomBar()
+              : const AdminScreen()
           : const WelcomeScreen(),
     );
   }
