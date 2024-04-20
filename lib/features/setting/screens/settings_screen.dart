@@ -65,7 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HeadingText(
+              const HeadingText(
                 textitem: 'General',
                 fontSize: 18,
                 padding: EdgeInsets.only(top: 0, left: 15, right: 15),

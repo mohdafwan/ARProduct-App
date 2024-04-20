@@ -110,6 +110,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               children: [
                 image.isNotEmpty
                     ? Container(
+                        color: Colors.transparent,
                         width: double.infinity,
                         height: 150,
                         child: Image.file(
@@ -126,6 +127,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             width: double.infinity,
                             height: 150,
                             decoration: BoxDecoration(
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Column(

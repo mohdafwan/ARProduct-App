@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/common/widgets/loader.dart';
 import 'package:interior_design_arapp/features/home/services/home_services.dart';
+import 'package:interior_design_arapp/features/productOn/product_details_screen.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
@@ -62,7 +64,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 'See all the "${widget.category}"',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 20.0,
+                  fontSize: 15.0,
                 ),
               ),
             ),
@@ -82,47 +84,97 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                       ),
                       itemBuilder: (context, index) {
                         final product = productList![index];
-                        return Column(
-                          children: [
-                            SizedBox(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 0.5,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              OnProductDetailsScreen.routeName,
+                              arguments: product,
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 0.5,
+                                    ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Image.network(
-                                        product.images[0],
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height -
+                                              677,
+                                          child: Image.network(
+                                            product.images.first,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                        child: Text(
-                                          textAlign: TextAlign.left,
-                                          product.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 8,
+                                            right: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: const Color.fromARGB(
+                                                255, 184, 146, 212),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                textAlign: TextAlign.left,
+                                                product.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 17,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(0),
+                                                child: Text(
+                                                  textAlign: TextAlign.left,
+                                                  "\₹" +
+                                                      product.price.toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       },
                     ),

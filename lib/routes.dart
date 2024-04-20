@@ -4,7 +4,10 @@ import 'package:interior_design_arapp/features/auth/screens/screen_auth.dart';
 import 'package:interior_design_arapp/features/auth/screens/screen_auth.signin.dart';
 import 'package:interior_design_arapp/features/home/screens/category_details_screen.dart';
 import 'package:interior_design_arapp/features/home/screens/home_screen.dart';
+import 'package:interior_design_arapp/features/productOn/product_details_screen.dart';
+import 'package:interior_design_arapp/features/search/screens/search_screen.dart';
 import 'package:interior_design_arapp/features/welcome/screens/screen_welcome.dart';
+import 'package:interior_design_arapp/models/product.model.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -40,6 +43,22 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (context) => CategoryDetailsScreen(
           category: category,
+        ),
+      );
+    case SearchScreen.routeName:
+      var searchQuery = routeSettings.arguments as String;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => SearchScreen(
+          searchQuery: searchQuery,
+        ),
+      );
+    case OnProductDetailsScreen.routeName:
+      var product = routeSettings.arguments as Product;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => OnProductDetailsScreen(
+          product: product,
         ),
       );
     default:

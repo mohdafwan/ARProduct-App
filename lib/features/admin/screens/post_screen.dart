@@ -7,11 +7,6 @@ import 'package:interior_design_arapp/common/widgets/loader.dart';
 import 'package:interior_design_arapp/features/admin/screens/add_product_screen.dart';
 import 'package:interior_design_arapp/features/admin/services/admin_services.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
-import 'package:flutter/material.dart';
-import 'package:interior_design_arapp/common/widgets/loader.dart';
-import 'package:interior_design_arapp/features/admin/screens/add_product_screen.dart';
-import 'package:interior_design_arapp/features/admin/services/admin_services.dart';
-import 'package:interior_design_arapp/models/product.model.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);

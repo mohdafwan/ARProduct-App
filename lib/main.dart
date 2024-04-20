@@ -5,16 +5,9 @@ import 'package:interior_design_arapp/features/auth/services/auth.service.dart';
 import 'package:interior_design_arapp/features/welcome/screens/screen_welcome.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:interior_design_arapp/routes.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
-// cloudinary
-import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
-
 void main() {
-  CloudinaryContext.cloudinary =
-      Cloudinary.fromCloudName(cloudName: 'dwnwywbma');
   runApp(
     MultiProvider(
       providers: [

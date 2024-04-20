@@ -32,11 +32,12 @@ dev_dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.2
 
-  cloudinary_flutter: ^1.0.0
-  cloudinary_url_gen: ^1.0.0
   dotted_border: ^2.1.0
   file_picker: ^8.0.0+1
+  flutter_rating_bar: ^4.0.1
+  model_viewer_plus: ^1.7.2
   cloudinary_public: ^0.23.1
+
 
   
 # For information on the generic Dart part of this file, see the

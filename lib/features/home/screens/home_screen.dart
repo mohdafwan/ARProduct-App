@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:interior_design_arapp/models/product.model.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
-
-import 'package:cloudinary_flutter/image/cld_image.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -16,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    print(userProvider.user.toJson());
 
     return Scaffold(
       floatingActionButton: const CartFloating(),
@@ -34,25 +32,64 @@ class _HomeScreenState extends State<HomeScreen> {
                     bottomLeft: Radius.circular(40),
                     bottomRight: Radius.circular(40),
                   ),
-                  color: Color.fromARGB(255, 228, 174, 233),
+                  // color: Color.fromARGB(255, 228, 174, 233),
+                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
                 width: double.infinity,
-                child: SizedBox(
-                  child: CldImageWidget(
-                    
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.medium,
-                    repeat: ImageRepeat.noRepeat,
-                    publicId: "fa1cgi9q32fa8axtzeof",
-                  ),
-                ),
+                child: Container(),
               ),
             ),
+            SizedBox(height: 10),
             Expanded(
               flex: 2,
-              child: Container(
-                width: double.infinity,
-                child: const Text('DATA'),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: 8,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: const EdgeInsets.all(140),
+                          margin: const EdgeInsets.only(bottom: 5, left: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            // color: const Color.fromARGB(255, 129, 183, 203),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Column(),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: 8,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: const EdgeInsets.all(140),
+                          margin: const EdgeInsets.only(bottom: 5, right: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            // color: Color.fromARGB(255, 129, 138, 203),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Column(
+                            children: [],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             )
           ],

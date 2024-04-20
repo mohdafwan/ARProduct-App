@@ -45,7 +45,7 @@ class AdminServices {
       );
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.106:3000/admin/add-product'),
+        Uri.parse('http://192.168.63.171:3000/admin/add-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
@@ -70,7 +70,7 @@ class AdminServices {
     List<Product> productList = [];
     try {
       http.Response res = await http.get(
-        Uri.parse('http://192.168.0.106:3000/admin/get-products'),
+        Uri.parse('http://192.168.63.171:3000/admin/get-products'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
@@ -106,7 +106,7 @@ class AdminServices {
 
     try {
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.106:3000/admin/delete-product'),
+        Uri.parse('http://192.168.63.171:3000/admin/delete-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
