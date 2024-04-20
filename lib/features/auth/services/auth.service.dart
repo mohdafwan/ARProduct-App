@@ -30,7 +30,7 @@ class AuthServiceSignUp {
       );
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.63.171:3000/api/register'),
+        Uri.parse('http://192.168.0.105:3000/api/register'),
         body: user.toJson(),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -60,7 +60,7 @@ class AuthServiceSignUp {
   }) async {
     try {
       http.Response res = await http.post(
-        Uri.parse('http://192.168.63.171:3000/api/login'),
+        Uri.parse('http://192.168.0.105:3000/api/login'),
         body: jsonEncode({
           'email': email,
           'password': password,
@@ -104,7 +104,7 @@ class AuthServiceSignUp {
       }
 
       var tokenRes = await http.post(
-        Uri.parse('http://192.168.63.171:3000/tokenIsValid'),
+        Uri.parse('http://192.168.0.105:3000/tokenIsValid'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token!
@@ -114,7 +114,7 @@ class AuthServiceSignUp {
       var response = jsonDecode(tokenRes.body);
       if (response == true) {
         http.Response userRes = await http.get(
-          Uri.parse('http://192.168.63.171:3000/'),
+          Uri.parse('http://192.168.0.105:3000/'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': token

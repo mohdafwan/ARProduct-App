@@ -4,6 +4,7 @@ import 'package:interior_design_arapp/features/auth/screens/screen_auth.dart';
 import 'package:interior_design_arapp/features/auth/screens/screen_auth.signin.dart';
 import 'package:interior_design_arapp/features/home/screens/category_details_screen.dart';
 import 'package:interior_design_arapp/features/home/screens/home_screen.dart';
+import 'package:interior_design_arapp/features/home/services/home_services_products.dart';
 import 'package:interior_design_arapp/features/productOn/product_details_screen.dart';
 import 'package:interior_design_arapp/features/search/screens/search_screen.dart';
 import 'package:interior_design_arapp/features/welcome/screens/screen_welcome.dart';
@@ -61,6 +62,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           product: product,
         ),
       );
+    // homescreen
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(

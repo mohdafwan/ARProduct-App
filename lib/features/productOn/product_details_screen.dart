@@ -5,6 +5,8 @@ import 'package:interior_design_arapp/common/widgets/stars_bar.dart';
 import 'package:interior_design_arapp/features/home/widgets/address_area_box.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 class OnProductDetailsScreen extends StatefulWidget {
   static const String routeName = '/product-details';
 
@@ -18,7 +20,6 @@ class OnProductDetailsScreen extends StatefulWidget {
 class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
@@ -78,10 +79,12 @@ class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
           ),
           Expanded(
             child: Container(
-              width: double.infinity,
-              color: Colors.black,
-              child: Image.network('${widget.product.images[0]}',fit: BoxFit.contain,)
-            ),
+                width: double.infinity,
+                color: Colors.black,
+                child: Image.network(
+                  '${widget.product.images[0]}',
+                  fit: BoxFit.contain,
+                )),
           ),
           Expanded(
             child: Container(
@@ -240,9 +243,14 @@ class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
                                     right: 10,
                                   ),
                                   width: double.infinity,
-                                  child: const StarsBar(
-                                    rating: 3,
-                                    whatSize: 20,
+                                  child: RatingBar.builder(
+                                    itemSize: 17,
+                                    allowHalfRating: true,
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Color.fromARGB(255, 255, 163, 59),
+                                    ),
+                                    onRatingUpdate: (rating) {},
                                   ),
                                 ),
                               ],

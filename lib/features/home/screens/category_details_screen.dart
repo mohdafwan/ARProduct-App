@@ -47,8 +47,8 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         title: Text(
           widget.category,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+            fontWeight: FontWeight.bold,    
+            color: Colors.black,          
             fontFamily: 'rejoin',
           ),
         ),

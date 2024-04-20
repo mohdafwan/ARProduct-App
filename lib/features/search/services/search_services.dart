@@ -17,7 +17,7 @@ class SearchServices {
     List<Product> productList = [];
     try {
       http.Response res = await http.get(
-        Uri.parse('http://192.168.63.171:3000/api/products/search/$searchQuery'),
+        Uri.parse('http://192.168.0.105:3000/api/products/search/$searchQuery'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,

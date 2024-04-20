@@ -3,6 +3,15 @@ const auth = require("../middleware/auth.middleware");
 const Product = require("../models/product.model");
 const productRouter = express.Router();
 
+productRouter.get("/api/products/homescreen", auth, async (req, res) => {
+  try {
+    const homeProducts = await Product.find();
+    res.json(homeProducts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 productRouter.get("/api/products", auth, async (req, res) => {
   try {
     const products = await Product.find({ category: req.query.category });
