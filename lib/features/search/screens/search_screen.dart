@@ -7,9 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:interior_design_arapp/common/widgets/loader.dart';
 import 'package:interior_design_arapp/common/widgets/stars_bar.dart';
 import 'package:interior_design_arapp/features/home/widgets/address_area_box.dart';
-import 'package:interior_design_arapp/features/productOn/product_details_screen.dart';
+import 'package:interior_design_arapp/features/productOn/screens/product_details_screen.dart';
 import 'package:interior_design_arapp/features/search/services/search_services.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
+import 'package:interior_design_arapp/providers/user.provider.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search-screen';
@@ -25,6 +27,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<Product>? product;
+
   @override
   void initState() {
     super.initState();
@@ -87,7 +90,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            log("message");
+                            Navigator.pushNamed(
+                              context,
+                              OnProductDetailsScreen.routeName,
+                              arguments: product![index],
+                            );
                           },
                           child: SearchProducts(
                             product: product![index],
@@ -112,6 +119,14 @@ class SearchProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double totalRating = 0.0;
+    for (int i = 0; i < product.rating!.length; i++) {
+      totalRating += product.rating![i].rating;
+    }
+    double avgRating = 0.0;
+    if (totalRating != 0) {
+      avgRating = totalRating / product.rating!.length;
+    }
     return Column(
       children: [
         Container(
@@ -156,7 +171,7 @@ class SearchProducts extends StatelessWidget {
                     width: 235,
                     padding: const EdgeInsets.symmetric(horizontal: 0)
                         .copyWith(left: 10, top: 5),
-                    child: const StarsBar(rating: 4),
+                    child: StarsBar(rating: avgRating),
                   ),
                   Container(
                     width: 235,

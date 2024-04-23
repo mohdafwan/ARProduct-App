@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/common/widgets/loader.dart';
 import 'package:interior_design_arapp/features/home/services/home_services.dart';
-import 'package:interior_design_arapp/features/productOn/product_details_screen.dart';
+import 'package:interior_design_arapp/features/productOn/screens/product_details_screen.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {

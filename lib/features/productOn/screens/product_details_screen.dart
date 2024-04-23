@@ -1,11 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:interior_design_arapp/features/productOn/services/product_details_services.dart';
+import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:interior_design_arapp/common/widgets/stars_bar.dart';
 import 'package:interior_design_arapp/features/home/widgets/address_area_box.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class OnProductDetailsScreen extends StatefulWidget {
   static const String routeName = '/product-details';
@@ -18,6 +22,32 @@ class OnProductDetailsScreen extends StatefulWidget {
 }
 
 class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
+  
+  final ProductDetailsServices productDetailsServices =
+      ProductDetailsServices();
+  double avgRating = 0;
+  double myRating = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    double totalRating = 0.0;
+    for (int i = 0; i < widget.product.rating!.length; i++) {
+      totalRating += widget.product.rating![i].rating.toDouble();
+      if (widget.product.rating![i].userId ==
+          Provider.of<UserProvider>(context, listen: false).user.id) {
+        myRating = widget.product.rating![i].rating.toDouble();
+      }
+    }
+    if (totalRating != 0) {
+      avgRating = totalRating / widget.product.rating!.length.toDouble();
+    }
+  }
+
+  void addToCart() {
+    productDetailsServices.addToCart(context: context, product: widget.product);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,8 +99,8 @@ class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
                     ),
                   ),
                   Container(
-                    child: const StarsBar(
-                      rating: 4,
+                    child: StarsBar(
+                      rating: avgRating,
                     ),
                   ),
                 ],
@@ -244,13 +274,23 @@ class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
                                   ),
                                   width: double.infinity,
                                   child: RatingBar.builder(
-                                    itemSize: 17,
+                                    itemSize: 18,
+                                    initialRating: myRating,
                                     allowHalfRating: true,
+                                    itemPadding: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    minRating: 1,
                                     itemBuilder: (context, _) => const Icon(
                                       Icons.star,
                                       color: Color.fromARGB(255, 255, 163, 59),
                                     ),
-                                    onRatingUpdate: (rating) {},
+                                    onRatingUpdate: (rating) {
+                                      productDetailsServices.rateProduct(
+                                        context: context,
+                                        product: widget.product,
+                                        rating: rating,
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -285,7 +325,7 @@ class _OnProductDetailsScreenState extends State<OnProductDetailsScreen> {
                               height: double.infinity,
                               child: ordersBtn(
                                   text: 'Add to Cart',
-                                  onpress: () {},
+                                  onpress: addToCart,
                                   whatColor: Colors.white),
                             ),
                           ),

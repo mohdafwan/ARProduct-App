@@ -1,78 +1,73 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/constants/error_handler.dart';
 import 'package:interior_design_arapp/constants/utils/snackBar.utils.dart';
 import 'package:interior_design_arapp/models/product.model.dart';
+import 'package:interior_design_arapp/models/user.model.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-class HomeServices {
-  Future<List<Product>> fetchCategoryProducts({
+class ProductDetailsServices {
+  void addToCart({
     required BuildContext context,
-    required String category,
+    required Product product,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    List<Product> productList = [];
     try {
-      http.Response res = await http.get(
-        Uri.parse('http://192.168.0.105:3000/api/products?category=$category'),
+      http.Response res = await http.post(
+        Uri.parse('http://192.168.0.105:3000/api/products/add-to-cart'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
+        body: jsonEncode({
+          'id': product.id!,
+        }),
       );
       ErrorHandler(
-        response: res,
         context: context,
+        response: res,
         onSuccess: () {
-          for (int i = 0; i < jsonDecode(res.body).length; i++) {
-            productList.add(
-              Product.fromJson(
-                jsonEncode(jsonDecode(res.body)[i]),
-              ),
-            );
-          }
+          User user =
+              userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
+          userProvider.setUserFromModel(user);
         },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
-    return productList;
   }
 
-  Future<Product> fetchDealOfDay({
+  void rateProduct({
     required BuildContext context,
+    required Product product,
+    required double rating,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    Product product = Product(
-      threeName: '',
-      name: '',
-      description: '',
-      images: [],
-      price: 0,
-      quantity: 0,
-      category: '',
-    );
     try {
-      http.Response res = await http.get(
-        Uri.parse('http://192.168.0.105:3000/api/products/deal-of-day'),
+      http.Response res = await http.post(
+        Uri.parse('http://192.168.0.105:3000/api/products/rate-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
+        body: jsonEncode(
+          {
+            'id': product.id!,
+            'rating': rating,
+          },
+        ),
       );
       ErrorHandler(
-        response: res,
         context: context,
-        onSuccess: () {
-          product = Product.fromJson(res.body);
-        },
+        response: res,
+        onSuccess: () {},
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
-    return product;
   }
 }

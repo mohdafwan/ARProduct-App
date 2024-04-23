@@ -20,14 +20,14 @@ class AuthServiceSignUp {
   }) async {
     try {
       User user = User(
-        id: "",
-        username: username,
-        email: email,
-        password: password,
-        address: "",
-        type: "",
-        token: "",
-      );
+          id: "",
+          username: username,
+          email: email,
+          password: password,
+          address: "",
+          type: "",
+          token: "",
+          cart: []);
 
       http.Response res = await http.post(
         Uri.parse('http://192.168.0.105:3000/api/register'),
