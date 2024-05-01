@@ -70,8 +70,8 @@ duserRouter.post("/api/save-user-address", auth, async (req, res) => {
     user.address = address;
     user = await user.save();
     res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
