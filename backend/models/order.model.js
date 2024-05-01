@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { productSchema } = require("./product.model");
+const { productSchema } = require("./product");
 
 const orderSchema = mongoose.Schema({
   products: [
@@ -11,7 +11,7 @@ const orderSchema = mongoose.Schema({
       },
     },
   ],
-  TotalPrice: {
+  totalPrice: {
     type: Number,
     required: true,
   },
@@ -34,5 +34,4 @@ const orderSchema = mongoose.Schema({
 });
 
 const Order = mongoose.model("Order", orderSchema);
-
 module.exports = Order;
