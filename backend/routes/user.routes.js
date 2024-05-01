@@ -111,4 +111,12 @@ duserRouter.post("/api/order", auth, async (req, res) => {
   }
 });
 
+duserRouter.get("/api/orders/me", auth, async (req, res) => {
+  try {
+    let orders = await Order.find({ userId: req.user });
+    res.json(orders);
+  } catch (error) {
+    res.status.json({ error: error.message });
+  }
+});
 module.exports = duserRouter;
