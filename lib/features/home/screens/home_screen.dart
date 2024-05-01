@@ -43,222 +43,324 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
     );
     setState(() {});
+    productList!.forEach((element) {
+      log(element.name);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: const CartFloating(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                  color: Color.fromARGB(255, 228, 174, 233),
-                  // color: Color.fromARGB(255, 0, 0, 0),
-                ),
-                width: double.infinity,
-                child: product == null
-                    ? const Loader()
-                    : product!.name.isEmpty
-                        ? const SizedBox()
-                        : Container(
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(0).copyWith(
-                                      left: 20, right: 10, top: 10, bottom: 10),
-                                  child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(0).copyWith(
-                                      topRight: const Radius.circular(22),
-                                      bottomRight: const Radius.circular(40),
-                                      bottomLeft: const Radius.circular(20),
-                                      topLeft: const Radius.circular(20),
-                                    ),
-                                    child: Image.network(
-                                      product!.images.first,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 14,
-                                  top: 60,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: 'Find The Best\nDeal\n',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'rejoin',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 40,
-                                        height: 1,
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: '${product!.name}\n\n',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 60,
-                                  left: 10,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(14),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: Text(
-                                      '\₹${product!.price}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 15,
-                                        fontFamily: 'rejoin',
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              flex: 2,
-              child: productList == null
-                  ? const Loader()
-                  : Row(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: productList?.length ?? 0,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              final products = productList!.sublist(0)[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    OnProductDetailsScreen.routeName,
-                                    arguments: products,
-                                  );
-                                },
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.only(bottom: 5, left: 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: const Color.fromARGB(
-                                        255, 129, 183, 203),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Column(
+    if (productList == null || productList!.isEmpty) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: const Loader(), // Or any other loading indicator
+        ),
+      );
+    }
+
+    int midpoint = (productList!.length / 2).ceil();
+    // Split the list into two separate lists
+    List<Product> firstHalf = productList!.sublist(0, midpoint);
+    List<Product> secondHalf = productList!.sublist(midpoint);
+
+    return productList == null
+        ? const Loader()
+        : Scaffold(
+            floatingActionButton: const CartFloating(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        ),
+                        color: Color.fromARGB(255, 228, 174, 233),
+                        // color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      width: double.infinity,
+                      child: product == null
+                          ? const Loader()
+                          : product!.name.isEmpty
+                              ? const SizedBox()
+                              : Container(
+                                  child: Stack(
+                                    alignment: Alignment.centerRight,
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(0.0)
+                                      Container(
+                                        padding: const EdgeInsets.all(0)
                                             .copyWith(
-                                                left: 10,
+                                                left: 20,
                                                 right: 10,
-                                                bottom: 1,
-                                                top: 10),
+                                                top: 10,
+                                                bottom: 10),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(20.0),
+                                              BorderRadius.circular(0).copyWith(
+                                            topRight: const Radius.circular(22),
+                                            bottomRight:
+                                                const Radius.circular(40),
+                                            bottomLeft:
+                                                const Radius.circular(20),
+                                            topLeft: const Radius.circular(20),
+                                          ),
                                           child: Image.network(
-                                            products.images.first,
-                                            fit: BoxFit.cover,
+                                            product!.images.first,
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(0)
-                                            .copyWith(top: 10, bottom: 0),
-                                        child: Container(
-                                          child: Text(
-                                            '${products.name}',
+                                      Positioned(
+                                        left: 14,
+                                        top: 60,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: 'Find The Best\nDeal\n',
                                             style: const TextStyle(
-                                              height: 1,
+                                              color: Colors.white,
+                                              fontFamily: 'rejoin',
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 25,
-                                              fontFamily: 'rejoin',
+                                              fontSize: 40,
+                                              height: 1,
                                             ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '${product!.name}\n\n',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(0)
-                                            .copyWith(top: 3, bottom: 10),
+                                      Positioned(
+                                        bottom: 60,
+                                        left: 10,
                                         child: Container(
+                                          padding: const EdgeInsets.all(14),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                          ),
                                           child: Text(
-                                            '\₹${products.price}',
+                                            '\₹${product!.price}',
                                             style: const TextStyle(
-                                              fontSize: 21,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15,
                                               fontFamily: 'rejoin',
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: 8,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: const EdgeInsets.all(140),
-                                margin:
-                                    const EdgeInsets.only(bottom: 5, right: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  // color: Color.fromARGB(255, 0, 0, 0),
-                                  color: Color.fromARGB(255, 129, 138, 203),
-                                ),
-                                alignment: Alignment.center,
-                                child: const Column(
-                                  children: [],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
                     ),
-            )
-          ],
-        ),
-      ),
-    );
+                  ),
+                  SizedBox(height: 10),
+                  Expanded(
+                    flex: 2,
+                    child: productList == null
+                        ? const Loader() // Show a loader if productList is null
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemCount: firstHalf
+                                      .length, // No need for null check here
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    final product = firstHalf[
+                                        index]; // Access the product directly
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          OnProductDetailsScreen.routeName,
+                                          arguments: product,
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            bottom: 5, left: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: const Color.fromARGB(
+                                              255, 129, 183, 203),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(0.0)
+                                                  .copyWith(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 1,
+                                                top: 10,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                child: Image.network(
+                                                  product.images.first,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(0)
+                                                  .copyWith(
+                                                top: 10,
+                                                bottom: 0,
+                                              ),
+                                              child: Container(
+                                                child: Text(
+                                                  '${product.name}',
+                                                  style: const TextStyle(
+                                                    height: 1,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    fontFamily: 'rejoin',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(0)
+                                                  .copyWith(
+                                                top: 3,
+                                                bottom: 10,
+                                              ),
+                                              child: Container(
+                                                child: Text(
+                                                  '\₹${product.price}',
+                                                  style: const TextStyle(
+                                                    fontSize: 21,
+                                                    fontFamily: 'rejoin',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemCount: secondHalf
+                                      .length, // No need for null check here
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) {
+                                    final product = secondHalf[
+                                        index]; // Access the product directly
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          OnProductDetailsScreen.routeName,
+                                          arguments: product,
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            bottom: 5, left: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: const Color.fromARGB(
+                                              255, 173, 180, 235),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(0.0)
+                                                  .copyWith(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 1,
+                                                top: 10,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                child: Image.network(
+                                                  product.images.first,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(0)
+                                                  .copyWith(
+                                                top: 10,
+                                                bottom: 0,
+                                              ),
+                                              child: Container(
+                                                child: Text(
+                                                  '${product.name}',
+                                                  style: const TextStyle(
+                                                    height: 1,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    fontFamily: 'rejoin',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(0)
+                                                  .copyWith(
+                                                top: 3,
+                                                bottom: 10,
+                                              ),
+                                              child: Container(
+                                                child: Text(
+                                                  '\₹${product.price}',
+                                                  style: const TextStyle(
+                                                    fontSize: 21,
+                                                    fontFamily: 'rejoin',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
 

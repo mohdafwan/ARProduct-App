@@ -1,73 +1,76 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/constants/error_handler.dart';
 import 'package:interior_design_arapp/constants/utils/snackBar.utils.dart';
-import 'package:interior_design_arapp/models/product.model.dart';
+import 'package:http/http.dart' as http;
 import 'package:interior_design_arapp/models/user.model.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
-class ProductDetailsServices {
-  void addToCart({
+class AddressServices {
+  void saveUserAddress({
     required BuildContext context,
-    required Product product,
+    required String address,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
       http.Response res = await http.post(
-        Uri.parse('https://arproduct-app-1.onrender.com/api/products/add-to-cart'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/save-user-address'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
         body: jsonEncode({
-          'id': product.id!,
+          'address': address,
         }),
       );
       ErrorHandler(
-        context: context,
         response: res,
+        context: context,
         onSuccess: () {
-          User user =
-              userProvider.user.copyWith(cart: jsonDecode(res.body)['cart']);
+          User user = UserProvider().user.copyWith(
+                address: jsonDecode(res.body)['address'],
+              );
           userProvider.setUserFromModel(user);
         },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(context, 'Error occurred: $e');
+      print('Error in sellProduct: $e');
     }
   }
 
-  void rateProduct({
+  void placeOrder({
     required BuildContext context,
-    required Product product,
-    required double rating,
+    required String address,
+    required double totalSum,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
       http.Response res = await http.post(
-        Uri.parse('https://arproduct-app-1.onrender.com/api/products/rate-product'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/order'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
-        body: jsonEncode(
-          {
-            'id': product.id!,
-            'rating': rating,
-          },
-        ),
+        body: jsonEncode({
+          'cart': userProvider.user.cart,
+          'address': address,
+          'totalPrice': totalSum,
+        }),
       );
       ErrorHandler(
-        context: context,
         response: res,
-        onSuccess: () {},
+        context: context,
+        onSuccess: () {
+          User user = userProvider.user.copyWith(
+            cart: [],
+          );
+          userProvider.setUserFromModel(user);
+        },
       );
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(context, 'Error occurred: $e');
     }
   }
 }

@@ -20,17 +20,18 @@ class AuthServiceSignUp {
   }) async {
     try {
       User user = User(
-          id: "",
-          username: username,
-          email: email,
-          password: password,
-          address: "",
-          type: "",
-          token: "",
-          cart: []);
+        id: "",
+        username: username,
+        email: email,
+        password: password,
+        address: "",
+        type: "",
+        token: "",
+        cart: [],
+      );
 
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.105:3000/api/register'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/register'),
         body: user.toJson(),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -60,7 +61,7 @@ class AuthServiceSignUp {
   }) async {
     try {
       http.Response res = await http.post(
-        Uri.parse('http://192.168.0.105:3000/api/login'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/login'),
         body: jsonEncode({
           'email': email,
           'password': password,
@@ -104,7 +105,7 @@ class AuthServiceSignUp {
       }
 
       var tokenRes = await http.post(
-        Uri.parse('http://192.168.0.105:3000/tokenIsValid'),
+        Uri.parse('https://arproduct-app-1.onrender.com/tokenIsValid'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token!
@@ -114,7 +115,7 @@ class AuthServiceSignUp {
       var response = jsonDecode(tokenRes.body);
       if (response == true) {
         http.Response userRes = await http.get(
-          Uri.parse('http://192.168.0.105:3000/'),
+          Uri.parse('https://arproduct-app-1.onrender.com/'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': token

@@ -19,7 +19,7 @@ class CartServices {
     try {
       http.Response res = await http.delete(
         Uri.parse(
-            'http://192.168.0.105:3000/api/products/remove-from-cart/${product.id}'),
+            'https://arproduct-app-1.onrender.com/api/products/remove-from-cart/${product.id}'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,

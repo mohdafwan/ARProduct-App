@@ -17,7 +17,7 @@ class HomeServices {
     List<Product> productList = [];
     try {
       http.Response res = await http.get(
-        Uri.parse('http://192.168.0.105:3000/api/products?category=$category'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/products?category=$category'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
@@ -57,7 +57,7 @@ class HomeServices {
     );
     try {
       http.Response res = await http.get(
-        Uri.parse('http://192.168.0.105:3000/api/products/deal-of-day'),
+        Uri.parse('https://arproduct-app-1.onrender.com/api/products/deal-of-day'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,

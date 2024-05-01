@@ -46,9 +46,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (context) => const CartScreen(),
       );
     case AddressScreen.routeName:
+      var totalAmount = routeSettings.arguments as String;
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (context) => const AddressScreen(),
+        builder: (context) => AddressScreen(
+          totalAmount: totalAmount,
+        ),
       );
     case CategoryDetailsScreen.routeName:
       var category = routeSettings.arguments as String;

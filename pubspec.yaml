@@ -38,6 +38,8 @@ dev_dependencies:
   model_viewer_plus: ^1.7.2
   cloudinary_public: ^0.23.1
   badges: ^3.1.2
+  connectivity_plus: ^6.0.3
+  pay: ^2.0.0
 
 
   

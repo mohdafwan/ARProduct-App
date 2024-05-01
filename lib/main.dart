@@ -34,6 +34,7 @@ class MyARApp extends StatefulWidget {
 
 class _MyARAppState extends State<MyARApp> {
   final AuthServiceSignUp authServiceSignUp = AuthServiceSignUp();
+
   @override
   void initState() {
     super.initState();

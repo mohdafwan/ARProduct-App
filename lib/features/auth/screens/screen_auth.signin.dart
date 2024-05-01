@@ -25,7 +25,11 @@ class _AuthScreenSignInState extends State<AuthScreenSignIn> {
     super.dispose();
   }
 
+  bool _isLoading = false;
   void signInUser() {
+    setState(() {
+      _isLoading = true;
+    });
     if (_signInFromKey.currentState!.validate()) {
       _authServiceSignIn.signInUser(
         context: context,
@@ -33,6 +37,9 @@ class _AuthScreenSignInState extends State<AuthScreenSignIn> {
         password: _passwordController.text,
       );
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -120,10 +127,14 @@ class _AuthScreenSignInState extends State<AuthScreenSignIn> {
         },
         backgroundColor: Colors.white,
         disabledElevation: 0,
-        child: const Icon(
-          FontAwesomeIcons.arrowRight,
-          color: Colors.blue,
-        ),
+        child: _isLoading
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              )
+            : const Icon(
+                FontAwesomeIcons.arrowRight,
+                color: Colors.blue,
+              ),
       ),
     );
   }

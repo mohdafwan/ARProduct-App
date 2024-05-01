@@ -16,7 +16,7 @@ class HomeServicesAppProducts {
     List<Product> productList = [];
     try {
       http.Response res = await http.get(
-          Uri.parse('http://192.168.0.105:3000/api/products/homescreen'),
+          Uri.parse('https://arproduct-app-1.onrender.com/api/products/homescreen'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': userProvider.user.token,
