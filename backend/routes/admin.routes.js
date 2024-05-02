@@ -51,7 +51,7 @@ adminRouter.get("/admin/get-orders", admin, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-adminRouter.get("/admin/change-order-status", admin, async (req, res) => {
+adminRouter.post("/admin/change-order-status", admin, async (req, res) => {
   try {
     const { id, status } = req.body;
     let orders = await Order.findById(id);

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:interior_design_arapp/common/widgets/custom_button.dart';
+import 'package:interior_design_arapp/features/admin/services/admin_services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -24,11 +25,25 @@ class OrderDetailsScreen extends StatefulWidget {
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   int _currentStep = 0;
+  final AdminServices adminServices = AdminServices();
 
   @override
   void initState() {
     super.initState();
     _currentStep = widget.order.status;
+  }
+
+  void changeOrderStatus(int status) {
+    adminServices.changeOrderStatus(
+      context: context,
+      status: status + 1,
+      order: widget.order,
+      onSuccess: () {
+        setState(() {
+          _currentStep += 1;
+        });
+      },
+    );
   }
 
   @override
@@ -200,7 +215,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 const SizedBox(width: 7),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         widget.order.products[i].name
@@ -237,10 +253,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           currentStep: _currentStep,
                           controlsBuilder: (context, details) {
                             if (user.type == 'admin') {
-                              return CustomButton(
-                                text: 'Done',
-                                onClick: () {},
-                                Btnbg: Colors.red,
+                              return Container(
+                                alignment: Alignment.topLeft,
+                                child: CustomButton(
+                                  text: 'Done',
+                                  onClick: () => changeOrderStatus(
+                                    details.currentStep,
+                                  ),
+                                  Btnbg: Colors.red,
+                                  textbg: Colors.white,
+                                ),
                               );
                             }
                             return const SizedBox();
@@ -263,8 +285,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               title: const Text('Order Confirmed'),
                               content: Container(
                                   alignment: Alignment.topLeft,
-                                  child:
-                                      const Text("Your Order have been confrom")),
+                                  child: const Text(
+                                      "Your Order have been confrom")),
                               isActive: _currentStep > 1,
                               state: _currentStep > 1
                                   ? StepState.complete
@@ -274,8 +296,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               title: const Text('Shipped'),
                               content: Container(
                                   alignment: Alignment.topLeft,
-                                  child:
-                                      const Text("Your Order has been Shipped.")),
+                                  child: const Text(
+                                      "Your Order has been Shipped.")),
                               isActive: _currentStep > 2,
                               state: _currentStep > 2
                                   ? StepState.complete
