@@ -38,14 +38,16 @@ class _AddressScreenState extends State<AddressScreen> {
 
   List<PaymentItem> paymentItems = [];
   final AddressServices addressServices = AddressServices();
+
   @override
   void initState() {
     super.initState();
     paymentItems.add(
       PaymentItem(
-          amount: widget.totalAmount,
-          status: PaymentItemStatus.final_price,
-          label: 'Total Amount'),
+        amount: widget.totalAmount,
+        status: PaymentItemStatus.final_price,
+        label: 'Total Amount',
+      ),
     );
   }
 
@@ -58,39 +60,58 @@ class _AddressScreenState extends State<AddressScreen> {
     cityController.dispose();
   }
 
+  void addAndChangeAddress(String addressFromProvider) {
+    addressToBeUsed = "";
+    bool isForm = flatController.text.isNotEmpty &&
+        areaController.text.isNotEmpty &&
+        pincodeController.text.isNotEmpty &&
+        cityController.text.isNotEmpty;
+    if (isForm) {
+      if (_addressFormKey.currentState!.validate()) {
+        addressToBeUsed =
+            '${flatController.text.trim()}, ${areaController.text.trim()}, ${cityController.text.trim()} - ${pincodeController.text.trim()}';
+      } else {
+        showSnackBar(context, "Please enter all the values!");
+        return;
+      }
+    } else if (addressFromProvider.isNotEmpty) {
+      addressToBeUsed = addressFromProvider;
+    } else {
+      showSnackBar(context, "ERROR");
+      return;
+    }
+    AddressServices().saveUserAddress(
+      context: context,
+      address: addressToBeUsed,
+    );
+    Navigator.pop(context);
+    flatController.clear();
+    areaController.clear();
+    pincodeController.clear();
+    cityController.clear();
+  }
+
   void onGooglePayResult(res) {
     if (Provider.of<UserProvider>(context, listen: false)
         .user
         .address
         .isEmpty) {
       addressServices.saveUserAddress(
-        context: context,
-        address: addressToBeUsed,
-      );
+          context: context, address: addressToBeUsed);
     }
     addressServices.placeOrder(
-        context: context,
-        address: addressToBeUsed,
-        totalSum: double.parse(widget.totalAmount));
+      context: context,
+      address: addressToBeUsed,
+      totalPrice: double.parse(widget.totalAmount),
+    );
   }
 
-  void addAndChangeAddress(String addressFromProvider) {
+  void payPress(String addressFromProvider) {
     addressToBeUsed = "";
-    bool isForm = flatController.text.isNotEmpty ||
-        areaController.text.isNotEmpty ||
-        pincodeController.text.isNotEmpty ||
-        cityController.text.isNotEmpty;
-    if (isForm) {
-      if (_addressFormKey.currentState!.validate()) {
-        addressToBeUsed =
-            '${flatController.text}, ${areaController.text}, ${cityController.text} - ${pincodeController.text}';
-      } else {
-        throw Exception("Please enter all the value!");
-      }
-    } else if (addressFromProvider.isNotEmpty) {
+    if (addressFromProvider.isNotEmpty) {
       addressToBeUsed = addressFromProvider;
     } else {
-      showSnackBar(context, "ERROR");
+      showSnackBar(context, 'Error');
     }
   }
 
@@ -275,18 +296,20 @@ class _AddressScreenState extends State<AddressScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GooglePayButton(
-                      type: GooglePayButtonType.buy,
-                      theme: GooglePayButtonTheme.dark,
-                      paymentConfiguration: PaymentConfiguration.fromJsonString(
-                        defaultGooglePay,
-                      ),
-                      paymentItems: paymentItems,
-                      margin: const EdgeInsets.all(12),
-                      width: double.infinity,
-                      loadingIndicator: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      onPaymentResult: onGooglePayResult),
+                    onPressed: () => payPress(address),
+                    type: GooglePayButtonType.buy,
+                    theme: GooglePayButtonTheme.dark,
+                    paymentConfiguration: PaymentConfiguration.fromJsonString(
+                      defaultGooglePay,
+                    ),
+                    paymentItems: paymentItems,
+                    margin: const EdgeInsets.all(12),
+                    width: double.infinity,
+                    loadingIndicator: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    onPaymentResult: onGooglePayResult,
+                  ),
                 ],
               ),
             ),

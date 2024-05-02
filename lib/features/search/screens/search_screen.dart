@@ -208,7 +208,8 @@ class SearchProducts extends StatelessWidget {
               )
             ],
           ),
-        )
+        ),
+        SizedBox(height: 6)
       ],
     );
   }

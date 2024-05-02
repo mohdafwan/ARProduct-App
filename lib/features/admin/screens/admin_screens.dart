@@ -18,8 +18,8 @@ class _AdminScreenState extends State<AdminScreen> {
   int _page = 0;
   List<Widget> pageList = [
     const PostScreen(),
-    const OrderScreen(),
-    const AnalyticsScreen()
+    const AnalyticsScreen(),
+    const OrdersScreen(),
   ];
 
   void updatePage(int page) {

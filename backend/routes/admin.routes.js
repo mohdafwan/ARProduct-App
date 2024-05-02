@@ -43,7 +43,7 @@ adminRouter.post("/admin/delete-product", admin, async (req, res) => {
   }
 });
 
-adminRouter.get("admin/get-orders", admin, async (req, res) => {
+adminRouter.get("/admin/get-orders", admin, async (req, res) => {
   try {
     const orders = await Order.find({});
     res.json(orders);

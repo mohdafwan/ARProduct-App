@@ -10,6 +10,7 @@ import 'package:interior_design_arapp/models/product.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
+import 'package:interior_design_arapp/models/order.dart';
 
 class AdminServices {
   void sellProduct({
@@ -126,5 +127,37 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  // get all the userOrders
+  Future<List<Order>> fetchAllOrders(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Order> orderList = [];
+    try {
+      http.Response res =
+          await http.get(Uri.parse('https://arproduct-app-1.onrender.com/admin/get-orders'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token,
+      });
+
+      ErrorHandler(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            orderList.add(
+              Order.fromJson(
+                jsonEncode(
+                  jsonDecode(res.body)[i],
+                ),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return orderList;
   }
 }

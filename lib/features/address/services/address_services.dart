@@ -14,7 +14,7 @@ class AddressServices {
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
-      http.Response res = await http.post(
+      final response = await http.post(
         Uri.parse('https://arproduct-app-1.onrender.com/api/save-user-address'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -24,29 +24,31 @@ class AddressServices {
           'address': address,
         }),
       );
-      ErrorHandler(
-        response: res,
-        context: context,
-        onSuccess: () {
-          User user = UserProvider().user.copyWith(
-                address: jsonDecode(res.body)['address'],
-              );
-          userProvider.setUserFromModel(user);
-        },
-      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        User updatedUser =
+            userProvider.user.copyWith(address: responseData['address']);
+        userProvider.setUserFromModel(updatedUser);
+      } else {
+        throw Exception('Failed to save address: ${response.statusCode}');
+      }
     } catch (e) {
       showSnackBar(context, 'Error occurred: $e');
-      print('Error in sellProduct: $e');
+      print('Error in saveUserAddress: $e');
     }
   }
 
   void placeOrder({
     required BuildContext context,
     required String address,
-    required double totalSum,
+    required double totalPrice,
   }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
+      if (address.isEmpty) {
+        throw Exception('Address is empty or null');
+      }
       http.Response res = await http.post(
         Uri.parse('https://arproduct-app-1.onrender.com/api/order'),
         headers: {
@@ -56,13 +58,14 @@ class AddressServices {
         body: jsonEncode({
           'cart': userProvider.user.cart,
           'address': address,
-          'totalPrice': totalSum,
+          'totalPrice': totalPrice,
         }),
       );
       ErrorHandler(
         response: res,
         context: context,
         onSuccess: () {
+          showSnackBar(context, 'Your order has been placed!');
           User user = userProvider.user.copyWith(
             cart: [],
           );

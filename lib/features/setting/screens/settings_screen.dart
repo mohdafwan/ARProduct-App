@@ -1,11 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:interior_design_arapp/common/widgets/loader.dart';
+import 'package:interior_design_arapp/features/order_details/screens/order_details.dart';
+import 'package:interior_design_arapp/features/setting/services/setting_services.dart';
 import 'package:interior_design_arapp/features/setting/widgets/heading.dart';
 import 'package:interior_design_arapp/features/setting/widgets/navigate_button.dart';
 // ignore: depend_on_referenced_packages
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:interior_design_arapp/features/setting/widgets/settings_btns.dart';
+import 'package:interior_design_arapp/models/order.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +20,22 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  List<Order>? order;
+  final SettingServices settingServices = SettingServices();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrder();
+  }
+
+  void fetchOrder() async {
+    order = await settingServices.fetchMyOrder(context: context);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> listViewDemoObjects = ['string one', "string two"];
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: PreferredSize(
@@ -80,13 +97,6 @@ class _SettingScreenState extends State<SettingScreen> {
             ],
           ),
           settings_button(
-            text: 'Your Orders',
-            callback: () {
-              print('object');
-            },
-            btnIcons: FontAwesomeIcons.cartFlatbed,
-          ),
-          settings_button(
             text: 'Your Wish List',
             btnIcons: FontAwesomeIcons.arrowRightLong,
             callback: () {},
@@ -96,6 +106,56 @@ class _SettingScreenState extends State<SettingScreen> {
             btnIcons: FontAwesomeIcons.arrowRightLong,
             callback: () {},
           ),
+          const Padding(
+            padding: EdgeInsets.only(top: 0, left: 15, right: 15),
+            child: Text(
+              "Order",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          order == null
+              ? const Loader()
+              : Container(
+                  padding: EdgeInsets.only(top: 0, left: 15, right: 0),
+                  width: double.infinity,
+                  height: 150,
+                  child: ListView.builder(
+                    itemCount: order!.length,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: false,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            OrderDetailsScreen.routeName,
+                            arguments: order![index],
+                          );
+                          log("message from prderDetailsScreen!");
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 0, right: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.red,
+                          ),
+                          width: 150,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              order![index].products[0].images[0],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+          SizedBox(height: 12),
           Container(
             width: double.infinity,
             padding:

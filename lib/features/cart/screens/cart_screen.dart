@@ -66,15 +66,19 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           Expanded(
-            flex: 4,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: user.cart.length,
-              itemBuilder: (context, index) {
-                return CartProduct(index: index);
-              },
-            ),
-          ),
+              flex: 4,
+              child: user.cart.isEmpty
+                  ? Container(
+                    padding: const EdgeInsets.all(52),
+                    child: Image.asset('assets/images/cartimage.png'),
+                  )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: user.cart.length,
+                      itemBuilder: (context, index) {
+                        return CartProduct(index: index);
+                      },
+                    )),
           Expanded(
             flex: 1,
             child: Column(
