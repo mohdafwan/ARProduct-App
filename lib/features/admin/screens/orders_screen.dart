@@ -28,39 +28,40 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: orders!.length,
-      itemBuilder: (context, index) {
-        final orderData = orders![index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              OrderDetailsScreen.routeName,
-              arguments: orderData,
-            );
-          },
-          child: orders == null
-              ? const Loader()
-              : Container(
-                  margin: const EdgeInsets.only(left: 0, right: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.red,
-                  ),
-                  width: 150,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      orderData.products[0].images[0],
-                    ),
-                  ),
-                ),
-        );
-      },
-    );
+    return orders == null
+        ? const Loader()
+        : GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemCount: orders!.length,
+            itemBuilder: (context, index) {
+              final orderData = orders![index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    OrderDetailsScreen.routeName,
+                    arguments: orderData,
+                  );
+                },
+                child: orders == null
+                    ? const Loader()
+                    : Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        width: 150,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            orderData.products[0].images[0],
+                          ),
+                        ),
+                      ),
+              );
+            },
+          );
   }
 }
