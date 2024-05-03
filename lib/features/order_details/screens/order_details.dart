@@ -95,7 +95,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hey, ${user.username.split(" ").first}!',
+                        user.type == 'admin'
+                            ? 'New Order'
+                            : 'Hey, ${user.username.split(" ").first}!',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
@@ -105,7 +107,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Thank you for your order! We\'ll keep you updated on its arrival.',
+                        user.type == 'admin'
+                            ? "An order has been received. We'll ensure timely updates on its processing and delivery."
+                            : 'Thank you for your order! We\'ll keep you updated on its arrival.',
                         style: TextStyle(
                           height: 1.3,
                           color: Colors.grey[600],
@@ -253,17 +257,19 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           currentStep: _currentStep,
                           controlsBuilder: (context, details) {
                             if (user.type == 'admin') {
-                              return Container(
-                                alignment: Alignment.topLeft,
-                                child: CustomButton(
-                                  text: 'Done',
-                                  onClick: () => changeOrderStatus(
-                                    details.currentStep,
+                              if (_currentStep < 3) {
+                                return Container(
+                                  alignment: Alignment.topLeft,
+                                  child: CustomButton(
+                                    text: 'Done',
+                                    onClick: () => changeOrderStatus(
+                                      details.currentStep,
+                                    ),
+                                    Btnbg: Colors.red,
+                                    textbg: Colors.white,
                                   ),
-                                  Btnbg: Colors.red,
-                                  textbg: Colors.white,
-                                ),
-                              );
+                                );
+                              }
                             }
                             return const SizedBox();
                           },
@@ -310,8 +316,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 child: const Text(
                                     "Your Order has been Delovered and signed by you!"),
                               ),
-                              isActive: _currentStep >= 3,
-                              state: _currentStep >= 3
+                              isActive: _currentStep == 3,
+                              state: _currentStep == 3
                                   ? StepState.complete
                                   : StepState.indexed,
                             )

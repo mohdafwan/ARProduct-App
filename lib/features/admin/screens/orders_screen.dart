@@ -54,7 +54,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         ),
                         width: 150,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(15),
                           child: Image.network(
                             orderData.products[0].images[0],
                           ),

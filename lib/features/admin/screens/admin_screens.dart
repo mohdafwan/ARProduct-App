@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:interior_design_arapp/features/admin/screens/analyics_screen.dart';
 import 'package:interior_design_arapp/features/admin/screens/orders_screen.dart';
 import 'package:interior_design_arapp/features/admin/screens/post_screen.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ class _AdminScreenState extends State<AdminScreen> {
   int _page = 0;
   List<Widget> pageList = [
     const PostScreen(),
-    const AnalyticsScreen(),
     const OrdersScreen(),
   ];
 
@@ -75,7 +73,7 @@ class _AdminScreenState extends State<AdminScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: SafeArea(
         child: Container(
-          width: 240,
+          width: 150,
           margin: EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
             color: Colors.black,
@@ -95,21 +93,12 @@ class _AdminScreenState extends State<AdminScreen> {
                 },
               ),
               BottomBarButtons(
-                icons: Icons.analytics_outlined,
+                icons: Icons.all_inbox_outlined,
                 color: _page == 1
                     ? const Color.fromARGB(255, 184, 146, 212)
                     : const Color.fromARGB(89, 245, 245, 245),
                 callback: () {
                   updatePage(1);
-                },
-              ),
-              BottomBarButtons(
-                icons: Icons.all_inbox_outlined,
-                color: _page == 2
-                    ? const Color.fromARGB(255, 184, 146, 212)
-                    : const Color.fromARGB(89, 245, 245, 245),
-                callback: () {
-                  updatePage(2);
                 },
               ),
             ],

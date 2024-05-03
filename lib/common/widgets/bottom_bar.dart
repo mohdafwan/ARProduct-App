@@ -1,11 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:interior_design_arapp/features/category/screens/category_screen.dart';
 import 'package:interior_design_arapp/features/home/screens/home_screen.dart';
-import 'package:flutter/services.dart';
 import 'package:interior_design_arapp/features/setting/screens/settings_screen.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key});
+  final int initialPage;
+
+  const BottomBar({Key? key, required this.initialPage}) : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -13,15 +17,31 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   int _page = 0;
+  late PageController _pageController;
   List<Widget> pageList = [
     const HomeScreen(),
     const CategoryScreen(),
     const SettingScreen(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _page = widget.initialPage;
+    _pageController = PageController(initialPage: _page);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   void updatePage(int page) {
     setState(() {
       _page = page;
+      _pageController.animateToPage(page,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
 
@@ -30,13 +50,19 @@ class _BottomBarState extends State<BottomBar> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.black,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
     ));
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: pageList[_page],
+        body: PageView(
+          controller: _pageController,
+          children: pageList,
+          onPageChanged: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
           width: 200,

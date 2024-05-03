@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:interior_design_arapp/constants/error_handler.dart';
 import 'package:interior_design_arapp/constants/utils/snackBar.utils.dart';
+import 'package:interior_design_arapp/features/admin/screens/admin_screens.dart';
+import 'package:interior_design_arapp/features/auth/screens/screen_auth.signin.dart';
 import 'package:interior_design_arapp/models/order.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SettingServices {
@@ -39,5 +42,20 @@ class SettingServices {
       showSnackBar(context, e.toString());
     }
     return orderList;
+  }
+
+  void logOut(BuildContext context) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setString('x-auth-token', '');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AuthScreenSignIn.routeName,
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

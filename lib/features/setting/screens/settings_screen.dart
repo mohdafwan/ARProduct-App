@@ -106,55 +106,62 @@ class _SettingScreenState extends State<SettingScreen> {
             btnIcons: FontAwesomeIcons.arrowRightLong,
             callback: () {},
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 0, left: 15, right: 15),
             child: Text(
-              "Order",
-              style: TextStyle(
+              order == null || order!.isEmpty ? "No order found!" : "Order",
+              style: const TextStyle(
                 color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
-          order == null
-              ? const Loader()
-              : Container(
-                  padding: EdgeInsets.only(top: 0, left: 15, right: 0),
-                  width: double.infinity,
-                  height: 150,
-                  child: ListView.builder(
-                    itemCount: order!.length,
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: false,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            OrderDetailsScreen.routeName,
-                            arguments: order![index],
-                          );
-                          log("message from prderDetailsScreen!");
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 0, right: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.red,
-                          ),
-                          width: 150,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              order![index].products[0].images[0],
-                            ),
-                          ),
-                        ),
+          if (order == null)
+            const Loader()
+          else if (order!.isEmpty)
+            Container(
+              width: double.infinity,
+              height: 150,
+              child: Image.asset('assets/images/no-orderfound.png'),
+            )
+          else
+            Container(
+              padding: EdgeInsets.only(top: 0, left: 15, right: 0),
+              width: double.infinity,
+              height: 150,
+              child: ListView.builder(
+                itemCount: order!.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: false,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        OrderDetailsScreen.routeName,
+                        arguments: order![index],
                       );
+                      log("message from prderDetailsScreen!");
                     },
-                  ),
-                ),
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 0, right: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.red,
+                      ),
+                      width: 150,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          order![index].products[0].images[0],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           SizedBox(height: 12),
           Container(
             width: double.infinity,
@@ -172,9 +179,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 foregroundColor: Colors.white,
                 disabledBackgroundColor: Colors.white,
               ),
-              onPressed: () {
-                log('message');
-              },
+              onPressed: () => settingServices.logOut(context),
               child: const Text(
                 'Log Out',
                 style: TextStyle(

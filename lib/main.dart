@@ -45,7 +45,7 @@ class _MyARAppState extends State<MyARApp> {
     return Scaffold(
       body: Provider.of<UserProvider>(context).user.token.isNotEmpty
           ? Provider.of<UserProvider>(context).user.type == 'user'
-              ? const BottomBar()
+              ? const BottomBar(initialPage: 0,)
               : const AdminScreen()
           : const WelcomeScreen(),
     );

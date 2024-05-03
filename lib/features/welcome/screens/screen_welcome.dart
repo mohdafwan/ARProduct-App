@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:interior_design_arapp/common/widgets/custom_button.dart';
 import 'package:interior_design_arapp/features/auth/screens/screen_auth.dart';
 import 'package:interior_design_arapp/features/auth/screens/screen_auth.signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
@@ -11,6 +12,34 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  late SharedPreferences sharedPreferences;
+  bool showWelcomeScreen = false;
+
+  @override
+  void initState() {
+    _initSharedPreferences();
+    super.initState();
+  }
+
+  void _initSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      showWelcomeScreen =
+          sharedPreferences.getBool('showWelcomeScreen') ?? true;
+    });
+  }
+
+  void _toggleWelcomeScreen() {
+    Navigator.pushReplacementNamed(
+      context,
+      AuthScreenSignIn.routeName,
+    );
+    setState(() {
+      showWelcomeScreen = false;
+      sharedPreferences.setBool('showWelcomeScreen', false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,9 +120,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 height: 70,
                                 child: CustomButton(
                                   onClick: () => {
-                                    Navigator.pushNamed(
+                                    Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       AuthScreenSignUp.routeName,
+                                      (route) => false,
                                     )
                                   },
                                   text: "Create New Account",
@@ -104,12 +134,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               width: double.infinity,
                               height: 70,
                               child: CustomButton(
-                                onClick: () => {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AuthScreenSignIn.routeName,
-                                  )
-                                },
+                                onClick: _toggleWelcomeScreen,
                                 text: "I already have an account",
                                 Btnbg: Colors.white,
                                 textbg: Colors.black,

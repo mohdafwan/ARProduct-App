@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:interior_design_arapp/common/widgets/bottom_bar.dart';
 import 'package:interior_design_arapp/features/home/screens/home_screen.dart';
 import 'package:interior_design_arapp/providers/user.provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,13 @@ import 'package:interior_design_arapp/constants/utils/snackBar.utils.dart';
 import 'package:interior_design_arapp/models/user.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+void navigateToBottomBar(BuildContext context, int pageIndex) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => BottomBar(initialPage: pageIndex)),
+  );
+}
 
 class AuthServiceSignUp {
   // signup for the user
@@ -80,11 +88,8 @@ class AuthServiceSignUp {
           Provider.of<UserProvider>(context, listen: false)
               .setUser(jsonEncode(resData));
           await prefs.setString('x-auth-token', resData['token']);
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            HomeScreen.routeName,
-            (route) => false,
-          );
+          int pageIndex = 0;
+          navigateToBottomBar(context, pageIndex);
         },
       );
     } catch (e) {
