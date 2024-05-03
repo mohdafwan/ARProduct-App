@@ -1,3 +1,20 @@
+/*
+  === Welcome to ! ===
+  
+  Hey there, fellow innovators! 🚀
+  
+  This is where the magic begins,
+  where pixels dance and ideas shine! 💡
+  
+  Proudly crafted with passion and caffeine by:
+  MOHD AFWAN 👨‍💻
+  
+  Let's embark on this journey together,
+  shaping the digital landscape, one line at a time. 🌟
+  
+  Cheers to endless possibilities! 🥂
+*/
+
 const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/auth.routes");
@@ -7,9 +24,7 @@ const duserRouter = require("./routes/user.routes");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-const DB =
-  "mongodb://afwan:afwan111@ac-kkun4ub-shard-00-00.rnmjgkn.mongodb.net:27017,ac-kkun4ub-shard-00-01.rnmjgkn.mongodb.net:27017,ac-kkun4ub-shard-00-02.rnmjgkn.mongodb.net:27017/?ssl=true&replicaSet=atlas-51itvz-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster1";
-
+const DB = "mongodb://username:password@hostname:port/database"; // Replace username, password, hostname, port, and database with your MongoDB credentials and database details.
 app.use(express.json());
 app.use(userRouter);
 app.use(adminRouter);
