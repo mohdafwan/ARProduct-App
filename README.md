@@ -1,9 +1,3 @@
-# interior_design_arapp
-
-Certainly! Below is a template for your README file:
-
----
-
 # ARProduct-App
 
 Welcome to ARProduct-App! This is a cutting-edge application that leverages Augmented Reality (AR) to enhance the shopping experience. Below, you'll find all the necessary information to understand, set up, and contribute to this project.
